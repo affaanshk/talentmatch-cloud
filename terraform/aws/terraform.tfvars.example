@@ -1,0 +1,10 @@
+﻿aws_region        = "us-east-1"
+project_name      = "talentmatch"
+environment       = "dev"
+resume_bucket_name = "replace-with-globally-unique-bucket-name"
+# Optional billable EC2 demo; leave disabled for initial plan.
+create_ec2_demo = false
+# Only if create_ec2_demo = true:
+# ec2_instance_type = "t3.micro"
+# allowed_ssh_cidr = "YOUR.PUBLIC.IP.ADDRESS/32"
+# ec2_key_name = "existing-key-pair-name"

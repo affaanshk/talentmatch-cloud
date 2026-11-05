@@ -1,0 +1,9 @@
+output "resume_bucket_name" { value = aws_s3_bucket.resumes.bucket }
+output "resume_queue_url" { value = aws_sqs_queue.resume_processing.url }
+output "resume_dlq_url" { value = aws_sqs_queue.resume_dlq.url }
+output "eventbridge_rule_name" { value = aws_cloudwatch_event_rule.resume_completed.name }
+output "completion_lambda_name" { value = aws_lambda_function.resume_completed.function_name }
+output "dynamodb_table_name" { value = aws_dynamodb_table.resume_events.name }
+output "vpc_id" { value = aws_vpc.app.id }
+output "security_group_id" { value = aws_security_group.app.id }
+output "ec2_instance_id" { value = try(aws_instance.demo[0].id, null) }

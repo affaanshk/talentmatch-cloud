@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+numpy
+pandas
+scikit-learn
+nltk
+spacy
+pdfplumber
+python-multipart
+pytest
+sentence-transformers
+boto3
+psycopg[binary]
+google-genai

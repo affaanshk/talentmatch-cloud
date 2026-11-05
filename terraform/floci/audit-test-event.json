@@ -1,0 +1,8 @@
+{
+  "source": "talentmatch.resume",
+  "detail-type": "Resume Processing Completed",
+  "detail": {
+    "upload_id": "audit-test-001",
+    "status": "completed"
+  }
+}

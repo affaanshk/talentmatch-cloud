@@ -1,0 +1,8 @@
+{
+    "detail":  {
+                   "status":  "completed",
+                   "upload_id":  "test-upload-001"
+               },
+    "source":  "talentmatch.resume",
+    "detail-type":  "Resume Processing Completed"
+}

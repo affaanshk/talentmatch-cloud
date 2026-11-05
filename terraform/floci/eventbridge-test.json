@@ -1,0 +1,8 @@
+[
+  {
+    "Source": "talentmatch.resume",
+    "DetailType": "Resume Processing Completed",
+    "Detail": "{\"upload_id\":\"eventbridge-test-001\",\"status\":\"completed\"}",
+    "EventBusName": "default"
+  }
+]

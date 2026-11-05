@@ -1,0 +1,79 @@
+services:
+  talentmatch:
+    build: .
+    container_name: talentmatch_app
+    ports:
+      - "8000:8000"
+    environment:
+      AWS_ACCESS_KEY_ID: floci
+      AWS_SECRET_ACCESS_KEY: floci
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ENDPOINT_URL: http://host.docker.internal:4566
+      S3_BUCKET_NAME: talentmatch-resumes-local
+      SQS_ENDPOINT_URL: http://host.docker.internal:4566
+      SQS_QUEUE_URL: http://host.docker.internal:4566/000000000000/talentmatch-local-resume-processing
+      DATABASE_URL: postgresql://talentmatch:local_dev_password@db:5432/talentmatch
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.5-flash-lite}
+    volumes:
+      - .:/app
+    restart: unless-stopped
+
+  worker:
+    build: .
+    container_name: talentmatch_worker
+    command: ["python", "-m", "backend.worker"]
+    environment:
+      AWS_ACCESS_KEY_ID: floci
+      AWS_SECRET_ACCESS_KEY: floci
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_ENDPOINT_URL: http://host.docker.internal:4566
+      SQS_ENDPOINT_URL: http://host.docker.internal:4566
+      SQS_QUEUE_URL: http://host.docker.internal:4566/000000000000/talentmatch-local-resume-processing
+      S3_BUCKET_NAME: talentmatch-resumes-local
+      DATABASE_URL: postgresql://talentmatch:local_dev_password@db:5432/talentmatch
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-3.5-flash-lite}
+      EVENTBRIDGE_ENDPOINT_URL: http://host.docker.internal:4566
+      EVENT_BUS_NAME: default
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend-v2
+      dockerfile: Dockerfile.dev
+    container_name: talentmatch_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - talentmatch
+    volumes:
+      - ./frontend-v2:/app
+      - /app/node_modules
+    restart: unless-stopped
+
+  db:
+    image: postgres:16
+    container_name: talentmatch_db
+    environment:
+      POSTGRES_DB: talentmatch
+      POSTGRES_USER: talentmatch
+      POSTGRES_PASSWORD: local_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U talentmatch -d talentmatch"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
