@@ -55,7 +55,11 @@ flowchart LR
     Q -. retry limit .-> DLQ[[Dead-letter queue]]
 ```
 
-More detailed diagrams are in [System architecture](docs/architecture/system-architecture.md), [Upload processing sequence](docs/architecture/upload-processing-flow.md), and [Local cloud infrastructure](docs/architecture/cloud-infrastructure.md).
+More detailed diagrams are available in:
+
+- [System architecture](docs/architecture/system-architecture.md)
+- [Upload processing sequence](docs/architecture/upload-processing-flow.md)
+- [Local cloud infrastructure](docs/architecture/cloud-infrastructure.md)
 
 ## Technology stack
 
